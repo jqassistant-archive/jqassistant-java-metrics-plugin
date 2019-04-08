@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jqassistant.contrib.common</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.6.0</version>
+    </parent>
+
+    <groupId>org.jqassistant.contrib.plugin</groupId>
+    <artifactId>jqassistant-metrics-plugin</artifactId>
+    <version>1.7.0-SNAPSHOT</version>
+
+    <name>jQAssistant Metrics Plugin</name>
+    <description>The jQAssistant plugin </description>
+    <url>https://github.com/jqassistant-contrib/jqassistant-metrics-plugin</url>
+
+    <developers>
+        <developer>
+            <id>juergen-dufner</id>
+            <name>Jürgen Dufner</name>
+            <email>juergen@jdufner.de</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:jqassistant-contrib/jqassistant-metrics-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jqassistant-contrib/jqassistant-metrics-plugin.git</developerConnection>
+        <url>https://github.com/jqassistant-contrib/jqassistant-metrics-plugin</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>

@@ -1,0 +1,47 @@
+<jqa:jqassistant-rules xmlns:jqa="http://www.buschmais.com/jqassistant/core/rule/schema/v1.3">
+
+    <!-- https://github.com/buschmais/jqa-core-framework/blob/master/rule/src/main/resources/META-INF/xsd/jqassistant-rules-1.4.xsd -->
+
+    <group id="visiblity-metrics">
+        <includeConcept refId="visibility-metrics:AverageRelativeVisibility"/>
+        <includeConcept refId="visibility-metrics:GlobalRelativeVisibility"/>
+    </group>
+
+    <concept id="ood-metrics:RelativeVisibility">
+        <description>Computes relative visibility per package.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            WITH p
+            OPTIONAL MATCH (p)-[:CONTAINS]->(it:Java:Type {visibility:"public"})
+            WITH p, COUNT(it) AS noicvo
+            OPTIONAL MATCH (p)-[:CONTAINS]->(it:Java:Type)
+            WITH p, noicvo, COUNT(it) AS tnoic
+            WHERE noicvo > 0 AND tnoic > 0
+            SET p.relativeVisibility = toFloat(noicvo)/tnoic
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:AverageRelativeVisibility">
+        <description>Computes average relative visibility for all components.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            RETURN SUM(p.relativeVisibilty)/COUNT(p) AS averageRelativeVisibilty
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:GlobalRelativeVisibility">
+        <description>Computes global relative visibility for all components.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            WITH p
+            OPTIONAL MATCH (p)-[:CONTAINS]->(it:Java:Type {visibility:"public"})
+            WITH p, COUNT(it) AS noicvo
+            OPTIONAL MATCH (p)-[:CONTAINS]->(it:Java:Type)
+            WITH p, noicvo, COUNT(it) AS tnoic
+            WHERE noicvo > 0 AND tnoic > 0
+            RETURN toFloat(sum(noicvo))/sum(tnoic) AS globalRelativeVisibility
+        ]]></cypher>
+    </concept>
+
+</jqa:jqassistant-rules>

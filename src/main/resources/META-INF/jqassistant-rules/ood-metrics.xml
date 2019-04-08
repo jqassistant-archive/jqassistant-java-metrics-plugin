@@ -1,0 +1,103 @@
+<jqa:jqassistant-rules xmlns:jqa="http://www.buschmais.com/jqassistant/core/rule/schema/v1.3">
+
+    <!-- https://github.com/buschmais/jqa-core-framework/blob/master/rule/src/main/resources/META-INF/xsd/jqassistant-rules-1.4.xsd -->
+
+    <group id="ood-metrics">
+        <includeConcept refId="ood-metrics:Distance"/>
+        <includeConcept refId="ood-metrics:NormalizedDistance"/>
+    </group>
+
+    <concept id="ood-metrics:AfferentCouplings">
+        <description>Computes the afferent couplings for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            OPTIONAL MATCH (p)-[:CONTAINS]->(it:Java:Type)<-[:DEPENDS_ON]-(et:Java:Type)<-[:CONTAINS]-(ep:Package)
+            WHERE p <> ep
+            WITH p, COUNT(et) AS afferentCouplings
+            SET p.ca = COALESCE(afferentCouplings, 0)
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:EfferentCouplings">
+        <description>Computes the efferent couplings for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            OPTIONAL MATCH (p)-[:CONTAINS]->(it:Java:Type)-[:DEPENDS_ON]->(et:Java:Type)<-[:CONTAINS]-(ep:Package)
+            WHERE p <> ep
+            WITH p, COUNT(et) AS efferentCouplings
+            SET p.ce = COALESCE(efferentCouplings, 0)
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:Instability">
+        <requiresConcept refId="ood-metrics:AfferentCouplings"/>
+        <requiresConcept refId="ood-metrics:EfferentCouplings"/>
+        <description>Computes the instability for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            WHERE p.ce + p.ca > 0
+            WITH p, toFloat(p.ce) / (p.ce + p.ca) as instability
+            SET p.instability = instability
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:NumberAbstracts">
+        <description>Computes the number of abstract classes and interfaces for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package) WITH p
+            OPTIONAL MATCH (p)-[:CONTAINS]->(ac:Java:Type:Class {abstract:true}) WITH p, COUNT(ac) AS numberAbstractClasses
+            OPTIONAL MATCH (p)-[:CONTAINS]->(i:Java:Type:Interface) WITH p, numberAbstractClasses, COUNT(i) AS numberInterfaces
+            SET p.na = COALESCE(numberAbstractClasses + numberInterfaces, 0)
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:NumberClasses">
+        <description>Computes the number of all classes and interfaces for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            OPTIONAL MATCH (p)-[:CONTAINS]->(c:Java:Type)
+            WITH p, COUNT(c) AS numberClasses
+            SET p.nc = COALESCE(numberClasses, 0)
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:Abstractness">
+        <requiresConcept refId="ood-metrics:NumberAbstracts"/>
+        <requiresConcept refId="ood-metrics:NumberClasses"/>
+        <description>Computes the abstractness for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            WHERE p.nc > 0
+            SET p.abstractness = toFloat(p.na) / p.nc
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:Distance">
+        <requiresConcept refId="ood-metrics:Abstractness"/>
+        <requiresConcept refId="ood-metrics:Instability"/>
+        <description>Computes the distance for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            SET p.distance = abs(p.abstractness + p.instability -1) / sqrt(2)
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+    <concept id="ood-metrics:NormalizedDistance">
+        <requiresConcept refId="ood-metrics:Abstractness"/>
+        <requiresConcept refId="ood-metrics:Instability"/>
+        <description>Computes the normalized distance for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package)
+            SET p.normalizedDistance = abs(p.abstractness + p.instability -1)
+            RETURN p
+        ]]></cypher>
+    </concept>
+
+</jqa:jqassistant-rules>
