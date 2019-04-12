@@ -10,10 +10,10 @@
     </parent>
 
     <groupId>org.jqassistant.contrib.plugin</groupId>
-    <artifactId>jqassistant-metrics-plugin</artifactId>
+    <artifactId>jqassistant-java-metrics-plugin</artifactId>
     <version>1.7.0-SNAPSHOT</version>
 
-    <name>jQAssistant Metrics Plugin</name>
+    <name>jQAssistant Java Metrics Plugin</name>
     <description>The jQAssistant plugin </description>
     <url>https://github.com/jqassistant-contrib/jqassistant-metrics-plugin</url>
 
@@ -26,9 +26,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:jqassistant-contrib/jqassistant-metrics-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:jqassistant-contrib/jqassistant-metrics-plugin.git</developerConnection>
-        <url>https://github.com/jqassistant-contrib/jqassistant-metrics-plugin</url>
+        <connection>scm:git:git@github.com:jqassistant-contrib/jqassistant-java-metrics-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jqassistant-contrib/jqassistant-java-metrics-plugin.git</developerConnection>
+        <url>https://github.com/jqassistant-contrib/jqassistant-java-metrics-plugin</url>
         <tag>HEAD</tag>
     </scm>
 
