@@ -1,18 +1,19 @@
-package org.jqassistant.contrib.plugin.javametrics;
+package org.jqassistant.contrib.plugin.javametrics.oodmetrics;
 
 import static org.junit.Assert.assertEquals;
 
 import com.buschmais.jqassistant.core.analysis.api.Result;
 import com.buschmais.jqassistant.core.analysis.api.rule.Concept;
 import com.buschmais.jqassistant.core.analysis.api.rule.Severity;
+import org.jqassistant.contrib.plugin.javametrics.AbstractMetricsIT;
 import org.junit.Test;
 
-public class InstabilityOfPackageIT extends AbstractOoMetricsOfPackageIT {
+public class InstabilityIT extends AbstractMetricsIT {
 
     @Test
     public void whenApplyAfferentCouplings_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(InstabilityOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(InstabilityIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:AfferentCouplings");
@@ -33,7 +34,7 @@ public class InstabilityOfPackageIT extends AbstractOoMetricsOfPackageIT {
     @Test
     public void whenApplyEfferentCouplings_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(InstabilityOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(InstabilityIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:EfferentCouplings");
@@ -54,7 +55,7 @@ public class InstabilityOfPackageIT extends AbstractOoMetricsOfPackageIT {
     @Test
     public void whenApplyInstablity_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(InstabilityOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(InstabilityIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:Instability");

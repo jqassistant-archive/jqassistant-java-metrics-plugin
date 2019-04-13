@@ -1,18 +1,19 @@
-package org.jqassistant.contrib.plugin.javametrics;
+package org.jqassistant.contrib.plugin.javametrics.oodmetrics;
 
 import static org.junit.Assert.assertEquals;
 
 import com.buschmais.jqassistant.core.analysis.api.Result;
 import com.buschmais.jqassistant.core.analysis.api.rule.Concept;
 import com.buschmais.jqassistant.core.analysis.api.rule.Severity;
+import org.jqassistant.contrib.plugin.javametrics.AbstractMetricsIT;
 import org.junit.Test;
 
-public class NormalizedDistanceOfPackageIT extends AbstractOoMetricsOfPackageIT {
+public class NormalizedDistanceIT extends AbstractMetricsIT {
 
     @Test
     public void whenApplyDistance_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(NormalizedDistanceOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(NormalizedDistanceIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:Distance");
@@ -33,7 +34,7 @@ public class NormalizedDistanceOfPackageIT extends AbstractOoMetricsOfPackageIT 
     @Test
     public void whenApplyNormalizedDistance_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(NormalizedDistanceOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(NormalizedDistanceIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:NormalizedDistance");

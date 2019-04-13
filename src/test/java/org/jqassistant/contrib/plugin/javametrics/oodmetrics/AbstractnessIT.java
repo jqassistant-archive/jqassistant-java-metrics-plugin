@@ -1,18 +1,19 @@
-package org.jqassistant.contrib.plugin.javametrics;
+package org.jqassistant.contrib.plugin.javametrics.oodmetrics;
 
 import static org.junit.Assert.assertEquals;
 
 import com.buschmais.jqassistant.core.analysis.api.Result;
 import com.buschmais.jqassistant.core.analysis.api.rule.Concept;
 import com.buschmais.jqassistant.core.analysis.api.rule.Severity;
+import org.jqassistant.contrib.plugin.javametrics.AbstractMetricsIT;
 import org.junit.Test;
 
-public class AbstractnessOfPackageIT extends AbstractOoMetricsOfPackageIT {
+public class AbstractnessIT extends AbstractMetricsIT {
 
     @Test
     public void whenApplyNumberClasses_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(AbstractnessOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(AbstractnessIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:NumberClasses");
@@ -33,7 +34,7 @@ public class AbstractnessOfPackageIT extends AbstractOoMetricsOfPackageIT {
     @Test
     public void whenApplyNumberAbstract_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(AbstractnessOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(AbstractnessIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:NumberAbstracts");
@@ -54,7 +55,7 @@ public class AbstractnessOfPackageIT extends AbstractOoMetricsOfPackageIT {
     @Test
     public void whenApplyAbstractness_expectValue() throws Exception {
         // arrange
-        scanClassPathDirectory(getClassesDirectory(AbstractnessOfPackageIT.class));
+        scanClassPathDirectory(getClassesDirectory(AbstractnessIT.class));
 
         // act
         Result<Concept> result = applyConcept("ood-metrics:Abstractness");

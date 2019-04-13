@@ -3,11 +3,12 @@
     <!-- https://github.com/buschmais/jqa-core-framework/blob/master/rule/src/main/resources/META-INF/xsd/jqassistant-rules-1.4.xsd -->
 
     <group id="visiblity-metrics">
+        <includeConcept refId="visibility-metrics:RelativeVisibility"/>
         <includeConcept refId="visibility-metrics:AverageRelativeVisibility"/>
         <includeConcept refId="visibility-metrics:GlobalRelativeVisibility"/>
     </group>
 
-    <concept id="ood-metrics:RelativeVisibility">
+    <concept id="visiblity-metrics:RelativeVisibility">
         <description>Computes relative visibility per package.</description>
         <cypher><![CDATA[
             MATCH (p:Package)
@@ -22,7 +23,7 @@
         ]]></cypher>
     </concept>
 
-    <concept id="ood-metrics:AverageRelativeVisibility">
+    <concept id="visiblity-metrics:AverageRelativeVisibility">
         <description>Computes average relative visibility for all components.</description>
         <cypher><![CDATA[
             MATCH (p:Package)
@@ -30,7 +31,7 @@
         ]]></cypher>
     </concept>
 
-    <concept id="ood-metrics:GlobalRelativeVisibility">
+    <concept id="visiblity-metrics:GlobalRelativeVisibility">
         <description>Computes global relative visibility for all components.</description>
         <cypher><![CDATA[
             MATCH (p:Package)
