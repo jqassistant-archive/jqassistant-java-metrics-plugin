@@ -44,17 +44,6 @@
         ]]></cypher>
     </concept>
 
-    <concept id="ood-metrics:NumberAbstracts">
-        <description>Computes the number of abstract classes and interfaces for all packages.</description>
-        <cypher><![CDATA[
-            MATCH (p:Package) WITH p
-            OPTIONAL MATCH (p)-[:CONTAINS]->(ac:Java:Type:Class {abstract:true}) WITH p, COUNT(ac) AS numberAbstractClasses
-            OPTIONAL MATCH (p)-[:CONTAINS]->(i:Java:Type:Interface) WITH p, numberAbstractClasses, COUNT(i) AS numberInterfaces
-            SET p.na = COALESCE(numberAbstractClasses + numberInterfaces, 0)
-            RETURN p
-        ]]></cypher>
-    </concept>
-
     <concept id="ood-metrics:NumberClasses">
         <description>Computes the number of all classes and interfaces for all packages.</description>
         <cypher><![CDATA[
@@ -66,9 +55,20 @@
         ]]></cypher>
     </concept>
 
+    <concept id="ood-metrics:NumberAbstracts">
+        <description>Computes the number of abstract classes and interfaces for all packages.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package) WITH p
+            OPTIONAL MATCH (p)-[:CONTAINS]->(ac:Java:Type:Class {abstract:true}) WITH p, COUNT(ac) AS numberAbstractClasses
+            OPTIONAL MATCH (p)-[:CONTAINS]->(i:Java:Type:Interface) WITH p, numberAbstractClasses, COUNT(i) AS numberInterfaces
+            SET p.na = COALESCE(numberAbstractClasses + numberInterfaces, 0)
+            RETURN p
+        ]]></cypher>
+    </concept>
+
     <concept id="ood-metrics:Abstractness">
-        <requiresConcept refId="ood-metrics:NumberAbstracts"/>
         <requiresConcept refId="ood-metrics:NumberClasses"/>
+        <requiresConcept refId="ood-metrics:NumberAbstracts"/>
         <description>Computes the abstractness for all packages.</description>
         <cypher><![CDATA[
             MATCH (p:Package)
