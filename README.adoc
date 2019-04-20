@@ -1,0 +1,191 @@
+:toc:
+= jQAssistant Java Metrics Plugin
+
+This project provides a http://jqassistant.org/[jQAssistant] plugin to measure some widely known metrics.
+
+== How It Works
+
+=== https://101.jqassistant.org/calculate-metrics/index.html#_ood_metrics[OOD-Metrics]
+
+The OOD metrics were described first by Robert C. Martin.
+He described several metrics:
+
+* Normalized Distance - It's very similar to distance, but in normalized range.
+* Distance - The distance from the "main sequence"
+  ** Instability - Relative number describes the stability of a package.
+    *** Afferent Couplings - Absolute number of incoming dependencies.
+    *** Efferent Couplings - Absolute number of outgoing dependencies.
+  ** Abstractness - Relative number describes the abstractness of a package.
+    *** Number Classes - Absolute number of classes in a package.
+    *** Number Abstracts - Absolute number of abstract classes in package.
+
+=== https://101.jqassistant.org/calculate-metrics/index.html#_visibility_metrics[Visibility Metrics]
+
+* Relative Visibility - Relative number describes the outside visible elements.
+
+== Usage
+
+=== Prerequisites
+
+* Java 8 or higher
+* Maven 3.2.5 or higher
+* jQAssistant 1.6.0 or higher (see below)
+
+=== Setup
+
+The plugin can be enabled in Maven based project by adding it as a dependency to the jQAssistant Maven plugin:
+
+.pom.xml
+[source,xml]
+----
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.buschmais.jqassistant</groupId>
+            <artifactId>jqassistant-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>scan</goal>
+                        <goal>analyze</goal>
+                    </goals>
+                    <configuration>
+                        <concepts>
+                            <concept>ood-metrics:NormalizedDistance</concept>               <!--1-->
+                            <concept>visiblity-metrics:RelativeVisibility</concept>
+                        </concepts>
+                    </configuration>
+                </execution>
+            </executions>
+            <dependencies>
+                <dependency>                                                                <!--2-->
+                    <groupId>org.jqassistant.contrib.plugin</groupId>
+                    <artifactId>jqassistant-java-metrics-plugin</artifactId>
+                    <version>1.7.0-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+----
+<1> Configure wanted the concepts of the plugin.
+<2> Declares the plugin as dependency of jQAssistant
+
+=== Application of the results
+
+==== Manually query the results
+
+[source,cypher]
+.Query some OOD-Metrics of package a.b.c
+----
+MATCH
+  (p:Java:Package {fqn:"a.b.c"})
+RETURN
+  p.normalizedDistance, p.abstractness, p.instability
+----
+
+Usually you won't query the results manually.
+Instead you'll implement your own rule to check if packages meet your requirements.
+
+==== Rule
+
+.jqassistant/my-rules.xml
+[source,xml]
+----
+<jqa:jqassistant-rules xmlns:jqa="http://www.buschmais.com/jqassistant/core/rule/schema/v1.3">
+    <constraint id="my-rule:NormalizedDistance">
+        <requiresConcept refId="ood-metrics:NormalizedDistance"/>
+        <description>The Normalized Distance of package a.b.c must be lower or equals than 0.2.</description>
+        <cypher><![CDATA[
+            MATCH (p:Package {fqn:"a.b.c"})
+            WHERE p.normalizedDistance > 0.2
+            RETURN p
+        ]]></cypher>
+    </concept>
+</jqa:jqassistant-rules>
+----
+
+This constraint will return the package `a.b.c` if its Normalized Distance is greater than 0.2.
+By using the default settings this will break your build.
+
+
+=== Reference
+
+All properties are created at a Node with Label `:Java:Package`.
+
+[cols="1,1,2a",options="header"]
+.All properties created by this plugin
+|===
+|Property|Description|Created by
+
+|ca
+|https://101.jqassistant.org/calculate-metrics/index.html#_ca_afferent_couplings[Afferent couplings]
+|ood-metrics:AfferentCouplings +
+ood-metrics:Instability +
+ood-metrics:Distance +
+ood-metrics:NormalizedDistance
+
+|ce
+|https://101.jqassistant.org/calculate-metrics/index.html#_ce_efferent_couplings[Efferent couplings]
+|ood-metrics:EfferentCouplings +
+ood-metrics:Instability +
+ood-metrics:Distance +
+ood-metrics:NormalizedDistance
+
+|instability
+|https://101.jqassistant.org/calculate-metrics/index.html#_i_instability[Instability]
+|ood-metrics:Instability +
+ood-metrics:Distance +
+ood-metrics:NormalizedDistance
+
+|nc
+|https://101.jqassistant.org/calculate-metrics/index.html#_nc_number_classes[Number Classes]
+|ood-metrics:NumberClasses +
+ood-metrics:Abstractness +
+ood-metrics:Distance +
+ood-metrics:NormalizedDistance
+
+|na
+|https://101.jqassistant.org/calculate-metrics/index.html#_na_number_abstracts[Number Abstracts]
+|ood-metrics:NumberAbstracts +
+ood-metrics:Abstractness +
+ood-metrics:Distance +
+ood-metrics:NormalizedDistance
+
+|abstractness
+|https://101.jqassistant.org/calculate-metrics/index.html#_a_abstractness[Abstractness]
+|ood-metrics:Abstractness +
+ood-metrics:Distance +
+ood-metrics:NormalizedDistance
+
+|distance
+|https://101.jqassistant.org/calculate-metrics/index.html#_d_distance[Distance]
+|ood-metrics:Distance
+
+|normalizeDistance
+|https://101.jqassistant.org/calculate-metrics/index.html#_d_normalized_distance[Normalized Distance]
+|ood-metrics:NormalizedDistance
+
+|relativeVisibility
+|https://101.jqassistant.org/calculate-metrics/index.html#_relative_visibility[Relative Visibility]
+|visibility-metrics:RelativeVisibility
+|===
+
+
+== Link
+
+.Calculate metrics
+https://101.jqassistant.org/calculate-metrics/index.html
+
+== Feedback
+
+Please report any https://github.com/jqassistant-contrib/jqassistant-java-metrics-plugin/issues[issues].
+
+== Acknowledgements
+
+This plugin could not provide its functionality without the support of the following open source projects:
+
+* https://jqassistant.org/[jQAssistant]
+* https://neo4j.org/[Neo4J]
+* https://maven.apache.org/[Apache Maven]

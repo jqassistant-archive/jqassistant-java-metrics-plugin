@@ -14,8 +14,8 @@
     <version>1.7.0-SNAPSHOT</version>
 
     <name>jQAssistant Java Metrics Plugin</name>
-    <description>The jQAssistant plugin </description>
-    <url>https://github.com/jqassistant-contrib/jqassistant-metrics-plugin</url>
+    <description>This project provides a jQAssistant plugin to measure some widely known metrics.</description>
+    <url>https://github.com/jqassistant-contrib/jqassistant-java-metrics-plugin</url>
 
     <developers>
         <developer>
