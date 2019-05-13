@@ -2,6 +2,7 @@
                                name="Metrics">
     <description>Metrics Rules And Reports</description>
     <rules>
+        <resource>lcom-metrics.xml</resource>
         <resource>ood-metrics.xml</resource>
         <resource>visibility-metrics.xml</resource>
     </rules>
