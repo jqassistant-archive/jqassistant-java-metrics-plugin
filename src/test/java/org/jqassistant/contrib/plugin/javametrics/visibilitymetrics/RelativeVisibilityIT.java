@@ -16,7 +16,7 @@ public class RelativeVisibilityIT extends AbstractMetricsIT {
         scanClassPathDirectory(getClassesDirectory(RelativeVisibilityIT.class));
 
         // act
-        Result<Concept> result = applyConcept("visiblity-metrics:RelativeVisibility");
+        Result<Concept> result = applyConcept("visibility-metrics:RelativeVisibility");
 
         // assert
         assertEquals(Result.Status.SUCCESS, result.getStatus());
