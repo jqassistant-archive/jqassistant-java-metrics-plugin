@@ -12,7 +12,7 @@ node {
 
   stage('Build') {
     def mvnHome = tool 'Maven-3.5.0'
-    sh "${mvnHome}/bin/mvn clean verify site -B -V -U -Pqa"
+    sh "${mvnHome}/bin/mvn clean verify -B -V -U"
   }
 
 //  stage('Result') {
