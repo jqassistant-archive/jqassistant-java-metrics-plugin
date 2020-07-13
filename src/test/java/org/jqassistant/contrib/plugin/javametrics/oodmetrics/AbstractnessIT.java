@@ -1,17 +1,17 @@
 package org.jqassistant.contrib.plugin.javametrics.oodmetrics;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.buschmais.jqassistant.core.analysis.api.Result;
-import com.buschmais.jqassistant.core.analysis.api.rule.Concept;
-import com.buschmais.jqassistant.core.analysis.api.rule.Severity;
+import com.buschmais.jqassistant.core.report.api.model.Result;
+import com.buschmais.jqassistant.core.rule.api.model.Concept;
+import com.buschmais.jqassistant.core.rule.api.model.Severity;
 import org.jqassistant.contrib.plugin.javametrics.AbstractMetricsIT;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class AbstractnessIT extends AbstractMetricsIT {
 
     @Test
-    public void whenApplyNumberClasses_expectValue() throws Exception {
+    public void testWhenApplyNumberClasses_expectValue() throws Exception {
         // arrange
         scanClassPathDirectory(getClassesDirectory(AbstractnessIT.class));
 
